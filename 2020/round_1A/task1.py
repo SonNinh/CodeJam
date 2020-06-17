@@ -51,12 +51,7 @@ if __name__ == "__main__":
 
 
 '''
-
-ACV*C*E
-*B*D*
-AC*
-ACVCBDE
-
+test case:
 
 2
 5
