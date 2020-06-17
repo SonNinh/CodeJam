@@ -68,24 +68,24 @@ CO\*DE
 J\*AM   
 There is no name that matches both patterns, so the answer would be \*.   
 
-2
-CODE\*
-\*JAM
-CODEJAM is one example of an acceptable answer.
+2   
+CODE\*   
+\*JAM   
+CODEJAM is one example of an acceptable answer.   
 
-The following cases could not appear in Test Set 1 or Test Set 2, but could appear in Test Set 3:
+The following cases could not appear in Test Set 1 or Test Set 2, but could appear in Test Set 3:   
 
-2
-A\*C\*E
-\*B\*D\*
-ABCDE and ABUNDANCE are among the possible acceptable answers, but BOLDFACE is not.
+2   
+A\*C\*E   
+\*B\*D\*   
+ABCDE and ABUNDANCE are among the possible acceptable answers, but BOLDFACE is not.   
 
-2
-A\*C\*E
-\*B\*D
-There is no name that matches both patterns, so the answer would be \*.
+2   
+A\*C\*E   
+\*B\*D   
+There is no name that matches both patterns, so the answer would be \*.   
 
-2
-\*\*Q\*\*
-\*A\*
+2   
+\*\*Q\*\*   
+\*A\*   
 QUAIL and AQ are among the possible acceptable answers here.
