@@ -3,8 +3,6 @@ class Node:
         self.neighbor = []
         self.time = None
         self.order = None
-        self.edge = []
-        self.updated = False
 
     def add_neighbor(self, node_id):
         self.neighbor.append(node_id)
@@ -19,88 +17,52 @@ class Problem:
         
 
     def build_graph(self, F):
-        count = 0
         for i, conn in enumerate(self.D):
             U, V = conn
             self.graph[U].add_neighbor(V)
             self.graph[V].add_neighbor(U)
-            self.graph[U].edge.append(i)
-            self.graph[V].edge.append(i)
         
-        time_sorted = []
-        order_sorted = []
+        time_ = []
+        order_ = []
         for i, f in enumerate(F):
             if f <= 0:
                 self.graph[i].order = -f
-                order_sorted.append(i)
-                count += 1
+                order_.append(i)
             else:
                 self.graph[i].time = f
-                time_sorted.append(i)
+                time_.append(i)
 
-        time_sorted = sorted(time_sorted)
-        order_sorted = sorted(order_sorted)
+        time_sorted = sorted(time_, key=lambda k: self.graph[k].time)
+        order_sorted = sorted(order_, key=lambda k: self.graph[k].order)
 
         self.graph[0].time = 0
-        self.graph[0].updated = True
         
-        count = 0
-        pre = -1
+        N = 0
+        j = 0
+        last_time = 0
+        last_order = 0
         for i in order_sorted:
-            n_empty = self.graph[i].order-pre-1
-            pre_j = 0
-            for idx, j in enumerate(time_sorted[count:n_empty+count]):
-                if self.graph[j].time > self.graph[pre_j].time:
-                    self.graph[j].order = pre + idx + 1
-                else: self.graph[j].order = self.graph[pre_j].order
-                pre_j = j
-            pre = self.graph[i].order
-            count += n_empty
-
+            changed = False
+            while self.graph[i].order > N:
+                N += 1
+                last_time = self.graph[time_sorted[j]].time
+                j += 1
+                changed = True
+            if changed or last_order < self.graph[i].order:
+                last_time += 1
+            self.graph[i].time = last_time
+            last_order = self.graph[i].order
+            N += 1
         
         # for i in self.graph:
         #     print(i.order, i.time)
 
-
-
     def solve(self):
-        sorted_order = sorted(range(len(self.graph)), key=lambda k: self.graph[k].order)
-        res = [0]*len(self.D)
+        res = []
+        for u, v in self.D:
+            delta = abs(self.graph[u].time - self.graph[v].time)
+            res.append(max(1, delta))
         
-        pre_order = 1
-        same_order = []
-        level = []
-        for i in sorted_order[1:]:
-            if self.graph[i].order == pre_order:
-                level.append(i)
-            else:
-                same_order.append(level)
-                level = [i]
-                pre_order = self.graph[i].order
-                
-        else:
-            same_order.append(level)
-
-        for level in same_order:
-            min_time = 0
-            for i in level:
-                if self.graph[i].time is not None:
-                    min_time = max(min_time, self.graph[i].time)
-            if min_time == 0:
-                for i in sorted_order[:self.graph[level[0]].order]:
-                    # print('.', node.time)
-                    min_time = max(min_time, self.graph[i].time)
-
-                min_time += 1
-
-            for i in level:
-                self.graph[i].time = min_time
-                self.graph[i].updated = True
-                for idx_, j in enumerate(self.graph[i].edge):
-                    if self.graph[self.graph[i].neighbor[idx_]].updated:
-                        res[j] = self.graph[i].time - self.graph[self.graph[i].neighbor[idx_]].time
-                        res[j] = max(1, res[j])
-
         return res
 
 
